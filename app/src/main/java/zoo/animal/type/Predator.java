@@ -3,7 +3,7 @@ package zoo.animal.type;
 import zoo.animal.Animal;
 
 public abstract class Predator extends Animal {
-    private Predator(String name, double food) {
+    public Predator(String name, double food) {
         this.name = name;
         
         if (food > 0 && food < 500) {

@@ -4,7 +4,7 @@ import zoo.animal.type.Herbo;
 import zoo.ZooEntity;
 
 public class Monkey extends Herbo {
-    public Monkey(String name, double food, int kindness) {
+    public Monkey(String name) {
         super("Monkey: " + name, 24.5, 4); // пускай эта обезьяна - горилла
     }
 }

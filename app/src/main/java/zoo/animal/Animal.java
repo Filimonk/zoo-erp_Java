@@ -2,14 +2,13 @@ package zoo.animal;
 
 import zoo.ZooEntity;
 
-public interface IAnimal {
+interface IAnimal {
     public String getName();
     public double getAmountOfFood();
     public boolean isContact();
 }
 
 public abstract class Animal extends ZooEntity implements IAnimal {
-    protected String name;
     protected double food;
     protected int kindness;
     protected boolean isContact;

@@ -1,11 +1,11 @@
-package zoo.InventoryManagement;
+package zoo.inventoryManagement;
 
 import zoo.ZooEntity;
 
-public interface IInventoryManagement {
-    public void register(ZooEntity);
-    public String getName(ZooEntity);
-    public int getNumber(ZooEntity);
+interface IInventoryManagement {
+    public void register(ZooEntity zooEntity);
+    public String getName(ZooEntity zooEntity);
+    public int getNumber(ZooEntity zooEntity);
     public void printAllEntities();
 }
 

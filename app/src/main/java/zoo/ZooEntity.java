@@ -1,6 +1,7 @@
 package zoo;
 
 public abstract class ZooEntity implements Comparable<ZooEntity> {
+    protected String name;
     public abstract String getName();
     
     @Override

@@ -2,7 +2,7 @@ package zoo.vetClinic;
 
 import zoo.ZooEntity;
 
-public interface IVetClinic {
+interface IVetClinic {
     public boolean checkHealth(ZooEntity zooEntity);
 }
 

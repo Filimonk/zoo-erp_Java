@@ -5,6 +5,7 @@ import java.util.List;
 
 import zoo.ZooEntity;
 import zoo.animal.Animal;
+import zoo.thing.Thing;
 import zoo.inventoryManagement.InventoryManagement;
 import zoo.vetClinic.VetClinic;
 
@@ -12,9 +13,9 @@ public class Zoo {
     private int numberOfAnimals = 0;
     private double totalAmountOfFood = 0;
     
-    private List<Animal> animals = new ArrayList<>();
-    private List<Animal> animalsOfContactSection = new ArrayList<>();
-    private List<InventoryItem> inventoryItemsList = new ArrayList<>();
+    private List<ZooEntity> animals = new ArrayList<>();
+    private List<ZooEntity> animalsOfContactSection = new ArrayList<>();
+    private List<ZooEntity> thingsList = new ArrayList<>();
     
     private VetClinic vetClinic;
     private final InventoryManagement inventoryManagement;
@@ -62,6 +63,7 @@ public class Zoo {
             }
             
             inventoryManagement.register(newAnimal);
+            System.out.println("Животное здорово и успешно добавлено в зоопарк.");
         }
         else {
             System.out.println("Животное не здорово, поэтому оно не может быть принято.");
@@ -70,12 +72,12 @@ public class Zoo {
     
     public void printAnimals() {
         System.out.println("Вывод всех животных в формате \"Имя\" \"Инвентаризационный номер\":");
-        printZooEntityList(animals);
+        printZooEntitiesList(animals);
     }
     
     public void printContactAnimals() {
         System.out.println("Вывод всех контактных животных в формате \"Имя\" \"Инвентаризационный номер\":");
-        printZooEntityList(animalsOfContactSection);
+        printZooEntitiesList(animalsOfContactSection);
     }
     
     public void printNumberOfAnimals() {
@@ -85,14 +87,15 @@ public class Zoo {
     
     
     
-    public void addInventoryItem(InventoryItem newInventoryItem) {
-        inventoryItemsList.add(newInventoryItem);
-        inventoryManagement.register(newInventoryItem);
+    public void addThing(Thing newThing) {
+        thingsList.add(newThing);
+        inventoryManagement.register(newThing);
+        System.out.println("Вещь успешно добавлена в зоопарк.");
     }
     
-    public void printInventoryItems() {
+    public void printThings() {
         System.out.println("Вывод всего инвентаря в формате \"Имя\" \"Инвентаризационный номер\":");
-        printZooEntityList(inventoryItemsList);
+        printZooEntitiesList(thingsList);
     }
 
     

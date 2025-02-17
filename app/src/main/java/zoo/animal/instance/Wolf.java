@@ -4,7 +4,7 @@ import zoo.animal.type.Predator;
 import zoo.ZooEntity;
 
 public class Wolf extends Predator {
-    public Wolf(String name, double food) {
+    public Wolf(String name) {
         super("Wolf: " + name, 3);
     }
 }
