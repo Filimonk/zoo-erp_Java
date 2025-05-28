@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  
+  db-metadata:
+    image: postgres:15
+    container_name: db-metadata
+    restart: always
+    environment:
+      POSTGRES_DB: metadata_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - metadata_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+  db-analysis:
+    image: postgres:15
+    container_name: db-analysis
+    restart: always
+    environment:
+      POSTGRES_DB: analysis_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - analysis_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+  
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    restart: always
+    ports:
+      - "8080:8080"
+  
+  analysis:
+    build: ./analysis
+    container_name: analysis
+    restart: always
+    expose:
+      - "8080"
+  
+  storing:
+    build: ./storing
+    container_name: storing
+    restart: always
+    expose:
+      - "8080"
+
+volumes:
+  metadata_data:
+  analysis_data:
+
+networks:
+  app-network:
+
