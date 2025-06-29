@@ -54,7 +54,7 @@ public class AccountService {
                 stmt.setString(2, username);
                 stmt.executeUpdate();
             }
-            return getAccountByUsername(username); // Вернем уже с балансом
+            return getAccountByUsername(username);
         } catch (SQLException e) {
             System.err.println("Ошибка при создании аккаунта: " + e.getMessage());
             return null;
@@ -85,6 +85,22 @@ public class AccountService {
             }
         } catch (SQLException e) {
             System.err.println("Ошибка getAccountByUsername: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public BigDecimal depositToAccount(String username, BigDecimal amount) {
+        String sql = "UPDATE accounts SET \"balance\" = \"balance\" + ? WHERE \"username\" = ? RETURNING \"balance\"";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBigDecimal(1, amount);
+            stmt.setString(2, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBigDecimal("balance");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при пополнении счета: " + e.getMessage());
         }
         return null;
     }
