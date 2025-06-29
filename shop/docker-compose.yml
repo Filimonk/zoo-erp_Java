@@ -1,0 +1,100 @@
+services:
+  db-metadata:
+    image: postgres:15
+    container_name: db-metadata
+    environment:
+      POSTGRES_DB: metadata_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - metadata_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d metadata_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  db-analysis:
+    image: postgres:15
+    container_name: db-analysis
+    environment:
+      POSTGRES_DB: analysis_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - analysis_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d analysis_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-metadata
+      - db-analysis
+    environment:
+      ORDERS_SERVICE_URL: "http://orders:8080"
+      PAYMENTS_SERVICE_URL: "http://payments:8080"
+    networks:
+      - app-network
+
+  orders:
+    build: ./orders
+    container_name: orders
+    expose:
+      - "8080"
+    depends_on:
+      - db-metadata
+    environment:
+      DB_URL: "jdbc:postgresql://db-metadata:5432/metadata_db"
+      DB_USER: "user"
+      DB_PASSWORD: "password"
+    networks:
+      - app-network
+
+  payments:
+    build: ./payments
+    container_name: payments
+    expose:
+      - "8080"
+    depends_on:
+      db-analysis:
+        condition: service_healthy
+    environment:
+      DB_HOST: db-analysis
+      DB_PORT: "5432"
+      DB_NAME: analysis_db
+      DB_USER: user
+      DB_PASSWORD: password
+    networks:
+      - app-network
+  
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+
+volumes:
+  metadata_data:
+  analysis_data:
+
+networks:
+  app-network:
+    driver: bridge
+
